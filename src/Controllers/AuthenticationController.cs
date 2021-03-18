@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WorkoutTracker.Business.Interfacs;
 using WorkoutTracker.Controllers.Dto;
 using WorkoutTracker.Persistence;
-using WorkoutTracker.Persistence.Interfaces;
 using WorkoutTracker.Persistence.Models;
 
 namespace WorkoutTracker.Controllers
@@ -17,18 +17,18 @@ namespace WorkoutTracker.Controllers
         private readonly IMapper mapper;
         private readonly ILogger<AuthenticationController> logger;
         private readonly WorkoutTrackerDbContext dbContext;
-        private readonly ILoginRepository loginRepository;
+        private readonly IAuthenticationProcessor authenticationProcessor;
 
         public AuthenticationController(
             IMapper mapper,
             ILogger<AuthenticationController> logger,
             WorkoutTrackerDbContext dbContext,
-            ILoginRepository loginRepository)
+            IAuthenticationProcessor authenticationProcessor)
         {
             this.mapper = mapper;
             this.logger = logger;
             this.dbContext = dbContext;
-            this.loginRepository = loginRepository;
+            this.authenticationProcessor = authenticationProcessor;
         }
 
         [HttpPost("authenticate")]
@@ -40,7 +40,7 @@ namespace WorkoutTracker.Controllers
             }
 
             var loginCreds = mapper.Map<LoginCredentials>(loginDto);
-            var userId = await loginRepository.GetUserIdByCredentialsAsync(loginCreds);
+            var userId = await authenticationProcessor.ValidateCredentialsAsync(loginCreds);
 
             if (userId == 0)
             {

@@ -5,22 +5,22 @@ using WorkoutTracker.Persistence.Models;
 
 namespace WorkoutTracker.Persistence
 {
-    public class LoginRepository : ILoginRepository
+    public class LoginCredentialsRepository : ILoginCredentialsRepository
     {
         private readonly WorkoutTrackerDbContext dbContext;
 
-        public LoginRepository(WorkoutTrackerDbContext dbContext)
+        public LoginCredentialsRepository(WorkoutTrackerDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        public async Task<int> GetUserIdByCredentialsAsync(LoginCredentials loginCredentials)
+        public async Task<LoginCredentials> GetCredentialsAsync(LoginCredentials loginCredentials)
         {
             var loginCredsInDb = await dbContext.LoginCredentials
                 .SingleOrDefaultAsync(i => i.Username == loginCredentials.Username
                     && i.Password == loginCredentials.Password);
 
-            return loginCredsInDb != null ? loginCredsInDb.UserId : 0;
+            return loginCredsInDb;
         }
     }
 }

@@ -3,8 +3,8 @@ using WorkoutTracker.Persistence.Models;
 
 namespace WorkoutTracker.Persistence.Interfaces
 {
-    public interface ILoginRepository
+    public interface ILoginCredentialsRepository
     {
-        Task<int> GetUserIdByCredentialsAsync(LoginCredentials loginCredentials);
+        Task<LoginCredentials> GetCredentialsAsync(LoginCredentials loginCredentials);
     }
 }
