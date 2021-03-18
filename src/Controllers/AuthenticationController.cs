@@ -2,10 +2,10 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WorkoutTracker.Controllers.Dto;
 using WorkoutTracker.Persistence;
+using WorkoutTracker.Persistence.Interfaces;
 using WorkoutTracker.Persistence.Models;
 
 namespace WorkoutTracker.Controllers
@@ -17,15 +17,18 @@ namespace WorkoutTracker.Controllers
         private readonly IMapper mapper;
         private readonly ILogger<AuthenticationController> logger;
         private readonly WorkoutTrackerDbContext dbContext;
+        private readonly ILoginRepository loginRepository;
 
         public AuthenticationController(
             IMapper mapper,
             ILogger<AuthenticationController> logger,
-            WorkoutTrackerDbContext dbContext)
+            WorkoutTrackerDbContext dbContext,
+            ILoginRepository loginRepository)
         {
             this.mapper = mapper;
             this.logger = logger;
             this.dbContext = dbContext;
+            this.loginRepository = loginRepository;
         }
 
         [HttpPost("authenticate")]
@@ -33,15 +36,18 @@ namespace WorkoutTracker.Controllers
         {
             if (!ModelState.IsValid)
             {
-                logger.LogDebug($"{DateTime.Now} | invalid request object");
                 return new BadRequestObjectResult(ModelState);
             }
 
-            var loginCreds = await dbContext.LoginCredentials
-                .SingleAsync(i => i.Username == loginDto.Username && i.Password == loginDto.Password);
+            var loginCreds = mapper.Map<LoginCredentials>(loginDto);
+            var userId = await loginRepository.GetUserIdByCredentialsAsync(loginCreds);
 
-            logger.LogDebug($"{DateTime.Now}| login creds valid: {loginCreds != null}");
-            var response = new AuthenticationResponseDto(loginCreds != null, loginCreds.UserId);
+            if (userId == 0)
+            {
+                return new UnauthorizedResult();
+            }
+
+            var response = new AuthenticationResponseDto(userId);
 
             return new OkObjectResult(response);
         }

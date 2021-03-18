@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WorkoutTracker.Controllers.Dto;
 using WorkoutTracker.Persistence;
+using WorkoutTracker.Persistence.Interfaces;
 
 namespace WorkoutTracker
 {
@@ -25,6 +26,8 @@ namespace WorkoutTracker
             services.AddDbContext<WorkoutTrackerDbContext>(opt =>
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(typeof(MappingProfile));
+
+            services.AddTransient<ILoginRepository, LoginRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

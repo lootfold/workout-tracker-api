@@ -2,9 +2,9 @@ namespace WorkoutTracker.Controllers.Dto
 {
     public class AuthenticationResponseDto
     {
-        public AuthenticationResponseDto(bool success, int userId)
+        public AuthenticationResponseDto(int userId)
         {
-            Success = success;
+            Success = true;
             UserId = userId;
         }
 
