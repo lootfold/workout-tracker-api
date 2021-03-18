@@ -8,8 +8,8 @@ using WorkoutTracker.Persistence;
 namespace WorkoutTracker.Migrations
 {
     [DbContext(typeof(WorkoutTrackerDbContext))]
-    [Migration("20210318001029_AddModelForLoginCredentials")]
-    partial class AddModelForLoginCredentials
+    [Migration("20210318103236_AddModelsForStatusUserLoginCreds")]
+    partial class AddModelsForStatusUserLoginCreds
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,11 +27,17 @@ namespace WorkoutTracker.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("LoginCredentials");
 
@@ -40,6 +46,7 @@ namespace WorkoutTracker.Migrations
                         {
                             Id = 1,
                             Password = "password",
+                            UserId = 1,
                             Username = "lootfold"
                         });
                 });
@@ -63,6 +70,28 @@ namespace WorkoutTracker.Migrations
                         {
                             Id = 1,
                             State = "Ok"
+                        });
+                });
+
+            modelBuilder.Entity("WorkoutTracker.Persistence.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Pallav Dubey"
                         });
                 });
 #pragma warning restore 612, 618

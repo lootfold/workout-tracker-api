@@ -34,7 +34,8 @@ namespace WorkoutTracker.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("LoginCredentials");
 
@@ -90,17 +91,6 @@ namespace WorkoutTracker.Migrations
                             Id = 1,
                             Name = "Pallav Dubey"
                         });
-                });
-
-            modelBuilder.Entity("WorkoutTracker.Persistence.Models.LoginCredentials", b =>
-                {
-                    b.HasOne("WorkoutTracker.Persistence.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

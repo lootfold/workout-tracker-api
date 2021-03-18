@@ -18,21 +18,26 @@ namespace WorkoutTracker.Persistence
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<LoginCredentials>()
+                .HasIndex(l => l.Username).IsUnique();
+
             builder.Entity<Status>().HasData(new Status(1, "Ok"));
 
-            builder.Entity<User>().HasData(new User()
-            {
-                Id = 1,
-                Name = "Pallav Dubey"
-            });
+            builder.Entity<User>()
+                .HasData(new User()
+                {
+                    Id = 1,
+                    Name = "Pallav Dubey"
+                });
 
-            builder.Entity<LoginCredentials>().HasData(new LoginCredentials()
-            {
-                Id = 1,
-                Username = "lootfold",
-                Password = "password",
-                UserId = 1
-            });
+            builder.Entity<LoginCredentials>()
+                .HasData(new LoginCredentials()
+                {
+                    Id = 1,
+                    Username = "lootfold",
+                    Password = "password",
+                    UserId = 1
+                });
         }
     }
 }
