@@ -8,6 +8,8 @@ namespace WorkoutTracker.Controllers.Dto
         public MappingProfile()
         {
             CreateMap<Status, StatusDto>();
+            CreateMap<SignUpDto, LoginCredentials>();
+            CreateMap<SignUpDto, User>();
         }
     }
 }
