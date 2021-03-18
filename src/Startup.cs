@@ -29,8 +29,12 @@ namespace WorkoutTracker
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(typeof(MappingProfile));
 
-            services.AddTransient<ILoginCredentialsRepository, LoginCredentialsRepository>();
-            services.AddTransient<IAuthenticationProcessor, AuthenticationProcessor>();
+            services.AddScoped<ILoginCredentialsRepository, LoginCredentialsRepository>();
+            services.AddScoped<IAuthenticationProcessor, AuthenticationProcessor>();
+
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

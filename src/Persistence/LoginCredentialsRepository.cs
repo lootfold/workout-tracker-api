@@ -22,5 +22,10 @@ namespace WorkoutTracker.Persistence
 
             return loginCredsInDb;
         }
+
+        public async Task AddLoginCredentials(LoginCredentials loginCredentials)
+        {
+            await dbContext.LoginCredentials.AddAsync(loginCredentials);
+        }
     }
 }

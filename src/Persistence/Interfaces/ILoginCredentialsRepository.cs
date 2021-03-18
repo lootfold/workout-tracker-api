@@ -6,5 +6,7 @@ namespace WorkoutTracker.Persistence.Interfaces
     public interface ILoginCredentialsRepository
     {
         Task<LoginCredentials> GetCredentialsAsync(LoginCredentials loginCredentials);
+
+        Task AddLoginCredentials(LoginCredentials loginCredentials);
     }
 }
