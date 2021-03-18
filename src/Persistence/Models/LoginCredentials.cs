@@ -1,17 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WorkoutTracker.Persistence.Models
 {
     public class LoginCredentials
     {
-        public LoginCredentials(int id, string username, string password)
-        {
-            Id = id;
-            Username = username;
-            Password = password;
-        }
-
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -19,5 +14,10 @@ namespace WorkoutTracker.Persistence.Models
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+
+        public User User { get; set; }
     }
 }
