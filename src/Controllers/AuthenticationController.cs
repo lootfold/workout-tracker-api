@@ -33,11 +33,10 @@ namespace WorkoutTracker.Controllers
             }
 
             var loginCreds = await dbContext.LoginCredentials
-                                .SingleAsync(i => i.Username == loginDto.Username
-                                                && i.Password == loginDto.Password);
+                .SingleAsync(i => i.Username == loginDto.Username && i.Password == loginDto.Password);
 
             logger.LogDebug($"{DateTime.Now}| login creds valid: {loginCreds != null}");
-            var response = new AuthenticationResponseDto(loginCreds != null);
+            var response = new AuthenticationResponseDto(loginCreds != null, loginCreds.UserId);
 
             return new OkObjectResult(response);
         }
