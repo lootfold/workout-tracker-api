@@ -41,5 +41,12 @@ namespace WorkoutTracker.Business
 
             return newUser;
         }
+
+        public async Task<bool> ValidateUsernameAsync(string username)
+        {
+            var loginCredsInDb = await loginRepository.GetLoginCredsByUserNameAsync(username);
+
+            return loginCredsInDb == null ? true : false;
+        }
     }
 }

@@ -8,5 +8,7 @@ namespace WorkoutTracker.Persistence.Interfaces
         Task<LoginCredentials> GetCredentialsAsync(LoginCredentials loginCredentials);
 
         Task AddLoginCredentials(LoginCredentials loginCredentials);
+
+        Task<LoginCredentials> GetLoginCredsByUserNameAsync(string username);
     }
 }

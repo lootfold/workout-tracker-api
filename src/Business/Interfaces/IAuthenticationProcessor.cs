@@ -8,5 +8,7 @@ namespace WorkoutTracker.Business.Interfacs
         Task<int> ValidateCredentialsAsync(LoginCredentials loginCredentials);
 
         Task<User> SignUpAsync(User user, LoginCredentials loginCredentials);
+
+        Task<bool> ValidateUsernameAsync(string username);
     }
 }

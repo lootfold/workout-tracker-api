@@ -60,5 +60,18 @@ namespace WorkoutTracker.Controllers
 
             return new CreatedResult($"{newUser.Id}", newUser);
         }
+
+        [HttpPost("validate/username")]
+        public async Task<IActionResult> ValidateUsername([FromBody] ValidateUsernameDto validateUsernameDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new BadRequestObjectResult(ModelState);
+            }
+
+            var isValidUsername = await authenticationProcessor.ValidateUsernameAsync(validateUsernameDto.Username);
+
+            return new OkObjectResult(new { valid = isValidUsername });
+        }
     }
 }
