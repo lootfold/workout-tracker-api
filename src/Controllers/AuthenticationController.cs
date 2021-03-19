@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WorkoutTracker.Business.Interfacs;
 using WorkoutTracker.Controllers.Dto;
+using WorkoutTracker.Controllers.Filters;
 using WorkoutTracker.Persistence;
 using WorkoutTracker.Persistence.Models;
 
@@ -25,13 +26,9 @@ namespace WorkoutTracker.Controllers
         }
 
         [HttpPost("authenticate")]
+        [ModelStateValidationFilter]
         public async Task<IActionResult> Authenticate([FromBody] LoginDto loginDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return new BadRequestObjectResult(ModelState);
-            }
-
             var loginCreds = mapper.Map<LoginCredentials>(loginDto);
             var userId = await authenticationProcessor.ValidateCredentialsAsync(loginCreds);
 
@@ -46,13 +43,9 @@ namespace WorkoutTracker.Controllers
         }
 
         [HttpPost("signup")]
+        [ModelStateValidationFilter]
         public async Task<IActionResult> SignUP([FromBody] SignUpDto signUpDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return new BadRequestObjectResult(ModelState);
-            }
-
             var user = mapper.Map<User>(signUpDto);
             var loginCreds = mapper.Map<LoginCredentials>(signUpDto);
 
@@ -62,13 +55,9 @@ namespace WorkoutTracker.Controllers
         }
 
         [HttpPost("validate/username")]
+        [ModelStateValidationFilter]
         public async Task<IActionResult> ValidateUsername([FromBody] ValidateUsernameDto validateUsernameDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return new BadRequestObjectResult(ModelState);
-            }
-
             var isValidUsername = await authenticationProcessor.ValidateUsernameAsync(validateUsernameDto.Username);
 
             return new OkObjectResult(new { valid = isValidUsername });
